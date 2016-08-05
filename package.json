@@ -1,0 +1,19 @@
+{
+  "name": "finance_tracker",
+  "version": "1.0.0",
+  "description": "Finances taken care of.",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/adamcaron/finance_tracker.git"
+  },
+  "author": "Adam Caron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adamcaron/finance_tracker/issues"
+  },
+  "homepage": "https://github.com/adamcaron/finance_tracker#readme"
+}
