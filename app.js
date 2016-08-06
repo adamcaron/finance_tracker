@@ -1,21 +1,11 @@
 const moment = require('moment')
 const personal = require('./personal')
 
-const bills = [
-  {
-    // name: "",
-    // amount: "",
-    // dueDate: "",
-    // auto: false,
-    // accountWithdrawnFrom:
-  }
-]
-
 // Goal:
 // Get me a list of deposits by week for the next relevant month
 // and a total income over time
 
-function income () {
+function income (numberOfWeeks) {
   const daysOfWeek = {
        "sunday": 0,
        "monday": 1,
@@ -26,32 +16,23 @@ function income () {
      "saturday": 6
   }
 
+  // if today is past this week's payday, return next week's payday
   let payday = daysOfWeek.wednesday
+  let today = moment().day()
+  let nextSoonestPayday = today > payday ? (payday + 7) : payday
 
-  // if payday already past this week, return next week's payday
-  let nextSoonestPayday = moment().day() > payday ? (payday + 7) : payday
+  let depositAmount = personal.weeklyIncome
 
-  let depositDate = moment()
-    .day(nextSoonestPayday)
-    .format('M/D'),
-    depositAmount = personal.weeklyIncome
-
-  return depositDate + ' + ' + depositAmount
-}
-
-console.log( income() )
-
-// utils
-
-function times (n, f) { while ( n-- > 0 ) f() } // do something for a repeatable number of times
-
-function dollars (amount) {
-  let options = {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2
+  let i = numberOfWeeks
+  while (i-- > 0) {
+    let depositDate = moment()
+      .day(nextSoonestPayday)
+      .format('M/D')
+    console.log( depositDate + ' + ' + depositAmount )
+    nextSoonestPayday = nextSoonestPayday + 7
   }
-  return (amount).toLocaleString("en-US", options)
-  // http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString#Browser_Compatibility
+  console.log('=============')
+  console.log(`Total: ${numberOfWeeks * personal.weeklyIncome}`)
 }
+
+income(5)
