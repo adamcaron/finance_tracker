@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/adamcaron/finance_tracker/issues"
   },
-  "homepage": "https://github.com/adamcaron/finance_tracker#readme"
+  "homepage": "https://github.com/adamcaron/finance_tracker",
+  "dependencies": {
+    "moment": "^2.14.1"
+  }
 }
