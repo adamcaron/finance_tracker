@@ -1,4 +1,5 @@
 const moment = require('moment')
+const personal = require('./personal')
 
 const bills = [
   {
@@ -33,14 +34,12 @@ function income () {
   let depositDate = moment()
     .day(nextSoonestPayday)
     .format('M/D'),
-    depositAmount = 1100
+    depositAmount = personal.weeklyIncome
 
   return depositDate + ' + ' + depositAmount
 }
 
 console.log( income() )
-
-
 
 // utils
 
