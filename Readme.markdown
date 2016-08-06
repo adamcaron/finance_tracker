@@ -1,3 +1,5 @@
+# Finance Tracker
+
 An app to manage finances.
 
 ## Up and Running
