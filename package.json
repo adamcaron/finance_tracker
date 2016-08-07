@@ -2,21 +2,32 @@
   "name": "finance_tracker",
   "version": "1.0.0",
   "description": "Finances taken care of.",
-  "main": "app.js",
   "scripts": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/adamcaron/finance_tracker.git"
+    "dev": "webpack-dev-server --inline --hot"
   },
   "author": "Adam Caron",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/adamcaron/finance_tracker/issues"
-  },
-  "homepage": "https://github.com/adamcaron/finance_tracker",
   "dependencies": {
-    "moment": "^2.14.1"
+    "moment": "^2.14.1",
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-plugin-transform-runtime": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
+    "babel-preset-stage-2": "^6.0.0",
+    "babel-runtime": "^5.8.0",
+    "css-loader": "^0.21.0",
+    "style-loader": "^0.13.0",
+    "vue-hot-reload-api": "^1.2.1",
+    "vue-html-loader": "^1.0.0",
+    "vue-loader": "^7.0.1",
+    "webpack": "^1.12.3",
+    "webpack-dev-server": "^1.12.1"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "vue-resource": "^0.1.17",
+    "vue-router": "^0.7.5",
+    "vue": "^1.0.7"
+  }
   }
 }
