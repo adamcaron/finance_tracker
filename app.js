@@ -40,8 +40,14 @@ function debtTotal () {
   personal.debts.map(function (debt) {
     total = total + debt.amount
   })
-  console.log('Debt total: ', total)
+  // console.log('Debt total: ', total)
+  return total
 }
 
 income(5)
-debtTotal()
+const dollars = require('./utils/dollarFormat')
+console.log('Debt total: ', dollars(debtTotal()) )
+
+
+
+
