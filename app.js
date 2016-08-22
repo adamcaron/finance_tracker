@@ -35,4 +35,13 @@ function income (numberOfWeeks) {
   console.log(`Total: ${numberOfWeeks * personal.weeklyIncome}`)
 }
 
+function debtTotal () {
+  total = 0
+  personal.debts.map(function (debt) {
+    total = total + debt.amount
+  })
+  console.log('Debt total: ', total)
+}
+
 income(5)
+debtTotal()
