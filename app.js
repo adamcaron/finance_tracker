@@ -1,9 +1,6 @@
 const moment = require('moment')
-const personal = require('./personal')
-
-// Goal:
-// Get me a list of deposits by week for the next relevant month
-// and a total income over time
+const dollars = require('./utils/dollars')
+const db = require('./db')
 
 function income (numberOfWeeks) {
   const daysOfWeek = {
@@ -15,13 +12,11 @@ function income (numberOfWeeks) {
        "friday": 5,
      "saturday": 6
   }
-
-  // if today is past this week's payday, return next week's payday
+  let depositAmount = db.weeklyIncome
   let payday = daysOfWeek.wednesday
   let today = moment().day()
+  // if today is past this week's payday, return next week's payday
   let nextSoonestPayday = today > payday ? (payday + 7) : payday
-
-  let depositAmount = personal.weeklyIncome
 
   let i = numberOfWeeks
   while (i-- > 0) {
@@ -32,22 +27,19 @@ function income (numberOfWeeks) {
     nextSoonestPayday = nextSoonestPayday + 7
   }
   console.log('=============')
-  console.log(`Total: ${numberOfWeeks * personal.weeklyIncome}`)
+  return console.log(`Total: ${numberOfWeeks * db.weeklyIncome}`)
 }
 
 function debtTotal () {
   total = 0
-  personal.debts.map(function (debt) {
+  db.debts.map(function (debt) {
     total = total + debt.amount
   })
-  // console.log('Debt total: ', total)
-  return total
+  return console.log( '\nDebt total: ', dollars(total) )
 }
 
 income(5)
-const dollars = require('./utils/dollarFormat')
-console.log('Debt total: ', dollars(debtTotal()) )
-
+debtTotal()
 
 
 

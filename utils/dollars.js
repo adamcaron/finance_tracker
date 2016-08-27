@@ -1,3 +1,7 @@
+/*
+  Formats Numbers as US dollars.
+*/
+
 function dollars (amount) {
   let options = {
     style: "currency",
