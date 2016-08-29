@@ -5,8 +5,9 @@ const db = require('./db')
 seed(db, moment)
 const transactions = db.transactions
 
-let dateFormat = 'MMM DD' // || receive from param
-let startDate = moment().format() // param
+// TODO: recieve this info via params
+let dateFormat = 'MMM DD' // receive from param
+let startDate = moment(transactions[0].date).format() // param
 let endDate = moment(startDate).add(4, 'months').format() // param
 let numberOfDaysInTimeline = moment(endDate).diff(startDate, 'days')
 let timeline = {}
@@ -27,8 +28,31 @@ transactions.map((transaction) => {
 })
 
 balance = startBalance
+console.log(dollars( balance ))
 
 Object.keys(timeline).map((day) => {
-  if (timeline[day].balance) return console.log( day + ' => ' +  dollars( timeline[day].balance ) )
+
+  // transaction this day?
+  if (timeline[day].balance) {
+    let transactionsThisDay = timeline[day].transactions.map((transaction) => {
+
+      // deposit?
+      if (transaction.amt > 0) {
+        return '\n         +' + dollars( transaction.amt )
+      }
+
+      return '\n         ' + dollars( transaction.amt ) + ''
+    })
+
+    return console.log(
+      transactionsThisDay
+      + ' \n'
+      + day + ' => ' + dollars( timeline[day].balance )
+    )
+  }
+
   return console.log( day )
 })
+
+
+
