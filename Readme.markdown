@@ -29,7 +29,7 @@ An app to manage finances.
 },
 
 ```
- - Run it! `node app` to see weekly income given, number of weeks
+ - Run it! `node app` to see weekly income, given number of weeks
 
 
 ### Moment.js
