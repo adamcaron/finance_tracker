@@ -1,0 +1,50 @@
+version: '3.1'
+services:
+  api:
+    image: adamcaron/finance-tracker-api:dev
+    volumes:
+      - ${API_MOUNT}/src:/api/src
+    entrypoint: node_modules/.bin/nodemon
+    command:
+      - -L
+      - src/server.js
+    networks:
+      - web
+    deploy:
+      labels:
+        - "traefik.port=8085"
+        - "traefik.frontend.rule=PathPrefix:/api/"
+  ui:
+    image: adamcaron/finance-tracker-ui:dev
+    volumes:
+      - ${UI_MOUNT}/src:/ui/src
+    working_dir: /ui
+    entrypoint: node
+    command:
+      - build/dev-server.js
+    networks:
+      - web
+    deploy:
+      labels:
+        - "traefik.port=8080"
+        - "traefik.frontend.rule=PathPrefix:/"
+  proxy:
+    image: traefik
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - --web
+      - --docker
+      - --docker.swarmmode
+      - --logLevel=DEBUG
+    networks:
+      - web
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+networks:
+  web:
