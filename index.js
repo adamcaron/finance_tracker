@@ -8,27 +8,45 @@ const transactions = db.recurringTransactions
 
 // TODO: recieve this info via params
 let dateFormat = 'MMM DD' // receive from param
-let startDate = moment(transactions[0].date).format() // param
-let endDate = moment(startDate).add(4, 'months').format() // param
+let startDate = moment() // param
+let endDate = moment(startDate).add(4, 'months') // param
 let numberOfDaysInTimeline = moment(endDate).diff(startDate, 'days')
 let timeline = []
 let startBalance = 0 // receive from param
+let startPayDate = moment('2017-11-16')
+let paySchedule = []
+// Create pay schedule
+for (let i=0; i<= numberOfDaysInTimeline; i += 14) {
+  let payDay = moment(startPayDate).add(i, 'days').format('MMM DD')
+  paySchedule.push(payDay)
+}
 
 // Create the Timeline
 for (let i=0; i<= numberOfDaysInTimeline; i++) {
+  let year = moment(startDate).add(i, 'days').format('YYYY')
   let month = moment(startDate).add(i, 'days').format('MMM')
   let day = moment(startDate).add(i, 'days').format('DD')
+  let weekday = moment(startDate).add(i, 'days').format('dddd')
+  let date = moment(startDate).add(i, 'days')
   timeline.push({
     transactions: [],
     balance: 0,
+    year,
     month,
-    day
+    day,
+    weekday,
+    date
   })
 }
 // Populate Timeline Transactions
 transactions.forEach(transaction => {
   timeline.forEach(day => {
-    if (day.day === transaction.interval[1]) {
+    const timelineDay = moment(day.date).format('MMM DD')
+    const payday = paySchedule.includes(timelineDay)
+    if (day.weekday === transaction.day && payday) {
+      day.transactions.push(transaction)
+    }
+    if (day.day === transaction.day) {
       day.transactions.push(transaction)
     }
   })
