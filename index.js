@@ -9,10 +9,10 @@ const transactions = db.recurringTransactions
 // TODO: recieve this info via params
 let dateFormat = 'MMM DD' // receive from param
 let startDate = moment() // param
-let endDate = moment(startDate).add(4, 'months') // param
+let endDate = moment(startDate).add(8, 'weeks') // param
 let numberOfDaysInTimeline = moment(endDate).diff(startDate, 'days')
 let timeline = []
-let startBalance = 0 // receive from param
+let startBalance = 550 // receive from param
 let startPayDate = moment('2017-11-16')
 let paySchedule = []
 // Create pay schedule
@@ -26,7 +26,7 @@ for (let i=0; i<= numberOfDaysInTimeline; i++) {
   let year = moment(startDate).add(i, 'days').format('YYYY')
   let month = moment(startDate).add(i, 'days').format('MMM')
   let day = moment(startDate).add(i, 'days').format('DD')
-  let weekday = moment(startDate).add(i, 'days').format('dddd')
+  let weekday = moment(startDate).add(i, 'days').format('ddd')
   let date = moment(startDate).add(i, 'days')
   timeline.push({
     transactions: [],
@@ -41,9 +41,14 @@ for (let i=0; i<= numberOfDaysInTimeline; i++) {
 // Populate Timeline Transactions
 transactions.forEach(transaction => {
   timeline.forEach(day => {
-    const timelineDay = moment(day.date).format('MMM DD')
-    const payday = paySchedule.includes(timelineDay)
-    if (day.weekday === transaction.day && payday) {
+    const todayIsPayday = paySchedule.includes(moment(day.date).format('MMM DD'))
+    if (transaction.desc === 'Paycheck' && todayIsPayday) {
+      day.transactions.push(transaction)
+    }
+    if (transaction.interval === 'weekly' && transaction.day === moment(day.date).format('dddd')) {
+      day.transactions.push(transaction)
+    }
+    if (transaction.interval === 'daily') {
       day.transactions.push(transaction)
     }
     if (day.day === transaction.day) {
@@ -67,5 +72,7 @@ timeline = timeline.map(day => {
 })
 
 timeline.forEach(day => {
-  console.log(`${day.month} ${day.day} ${day.balance}`)
+  let buffer = '                '
+  buffer = buffer.substring(day.weekday.length + day.day.length)
+  console.log(`\n${buffer} ${day.month} ${day.day} (${day.weekday})......${dollars(day.balance)}`)
 })
